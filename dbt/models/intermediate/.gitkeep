@@ -1,0 +1,10 @@
+-- Example intermediate model
+-- Create your intermediate transformation models here
+
+-- {{ config(materialized='view') }}
+
+-- SELECT
+--     user_id,
+--     COUNT(*) as order_count
+-- FROM {{ ref('stg_orders') }}
+-- GROUP BY user_id

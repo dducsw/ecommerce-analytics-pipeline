@@ -1,0 +1,7 @@
+# Airflow Providers (pinned versions)
+apache-airflow-providers-postgres>=5.13.0
+apache-airflow-providers-redis>=3.5.0
+apache-airflow-providers-docker>=3.10.0
+
+# Database drivers
+psycopg2-binary>=2.9.9

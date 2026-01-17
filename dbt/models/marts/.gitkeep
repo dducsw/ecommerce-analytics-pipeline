@@ -1,0 +1,13 @@
+-- Example mart model (final analytical table)
+-- Create your mart models here
+
+-- {{ config(materialized='table') }}
+
+-- SELECT
+--     u.user_id,
+--     u.name,
+--     o.order_count,
+--     o.total_revenue
+-- FROM {{ ref('stg_users') }} u
+-- LEFT JOIN {{ ref('int_user_orders') }} o
+--     ON u.user_id = o.user_id

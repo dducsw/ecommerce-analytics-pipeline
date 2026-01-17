@@ -1,0 +1,20 @@
+version: 2
+
+# sources:
+#   - name: raw
+#     database: airflow
+#     schema: public
+#     tables:
+#       - name: users
+#       - name: orders
+#       - name: products
+
+# models:
+#   - name: stg_users
+#     description: "Staging table for users"
+#     columns:
+#       - name: user_id
+#         description: "Primary key"
+#         tests:
+#           - unique
+#           - not_null

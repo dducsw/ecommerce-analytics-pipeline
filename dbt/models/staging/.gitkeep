@@ -1,0 +1,11 @@
+-- Example staging model
+-- Create your staging models here
+
+-- {{ config(materialized='view') }}
+
+-- SELECT
+--     id,
+--     name,
+--     created_at,
+--     updated_at
+-- FROM {{ source('raw', 'users') }}

@@ -1,0 +1,40 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.9 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="26.0.9">
+  <diagram name="Page-1" id="QKkSoDIsMuRQkZXiub5m">
+    <mxGraphModel dx="2412" dy="1618" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="2339" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="3eRd7Wyn-l3bts7BlHDw-9" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="834" y="713" width="184" height="197" as="geometry" />
+        </mxCell>
+        <mxCell id="3eRd7Wyn-l3bts7BlHDw-2" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1307" y="606" width="700" height="384" as="geometry" />
+        </mxCell>
+        <mxCell id="3eRd7Wyn-l3bts7BlHDw-3" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="1377" y="618" width="561" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="3eRd7Wyn-l3bts7BlHDw-4" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://upload.wikimedia.org/wikipedia/commons/7/71/AirflowLogo.svg;" vertex="1" parent="1">
+          <mxGeometry x="1556.55" y="628" width="194.87" height="75.28" as="geometry" />
+        </mxCell>
+        <mxCell id="3eRd7Wyn-l3bts7BlHDw-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;curved=1;" edge="1" parent="1" source="3eRd7Wyn-l3bts7BlHDw-5" target="3eRd7Wyn-l3bts7BlHDw-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3eRd7Wyn-l3bts7BlHDw-5" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.cookielaw.org/logos/4a2cde9e-5f84-44b2-bdbb-6a93354d1c72/e1199e19-1935-49fa-a4e2-bf7f9d08cee6/783d7c83-af8c-4032-901b-b3ec48982078/dbt-logo.png;" vertex="1" parent="1">
+          <mxGeometry x="1562" y="763.79" width="183.98" height="68.42" as="geometry" />
+        </mxCell>
+        <mxCell id="3eRd7Wyn-l3bts7BlHDw-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;curved=1;" edge="1" parent="1" source="3eRd7Wyn-l3bts7BlHDw-6" target="3eRd7Wyn-l3bts7BlHDw-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3eRd7Wyn-l3bts7BlHDw-6" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://download.logo.wine/logo/Google_Storage/Google_Storage-Logo.wine.png;clipPath=inset(9.5% 23.33% 8% 21.33%);" vertex="1" parent="1">
+          <mxGeometry x="1333" y="790.29" width="118.13" height="117.42" as="geometry" />
+        </mxCell>
+        <mxCell id="3eRd7Wyn-l3bts7BlHDw-7" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.worldvectorlogo.com/logos/google-bigquery-logo-1.svg;" vertex="1" parent="1">
+          <mxGeometry x="1836" y="779" width="140" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="3eRd7Wyn-l3bts7BlHDw-8" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://upload.wikimedia.org/wikipedia/commons/2/29/Postgresql_elephant.svg;" vertex="1" parent="1">
+          <mxGeometry x="871.6" y="773" width="108.81" height="112.21" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
