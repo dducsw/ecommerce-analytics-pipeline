@@ -92,7 +92,7 @@ select
         when coalesce(inv.available_quantity, 0) = 0  then 'Out of Stock'
         when coalesce(inv.available_quantity, 0) < 10 then 'Low Stock'
         else                                               'In Stock'
-    end                         as stock_status,
+    end                         as stock_status
 
 from products_with_scd2 p
 left join inventory         inv on p.product_id          = inv.product_id

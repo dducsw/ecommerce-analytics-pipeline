@@ -105,10 +105,12 @@ select
 
     -- Derived Customer Status
     case
-		when cp.first_purchase_date = cp.latest_purchase_date
-			then "New"
-		else "Returning"
-	end as customer_status,
+        when us.first_order_at = us.last_order_at and us.first_order_at is not null
+            then 'New'
+        when us.first_order_at is not null
+            then 'Returning'
+        else 'Never Purchased'
+    end as customer_status,
 
     (us.last_order_at::date - us.first_order_at::date) as days_as_customer
 

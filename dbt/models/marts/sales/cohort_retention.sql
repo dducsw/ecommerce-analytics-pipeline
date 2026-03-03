@@ -1,11 +1,11 @@
 /*
   cohort_retention
-  ─────────────────────────────────────────────────────────────────────
+  ---------------------------------------------------------------
   Grain  : one row per (cohort_month, period_number)
   Purpose: Monthly cohort retention analysis.
-           • period_number = 0  → the cohort's first month (acquisition)
-           • period_number = 1  → one month after acquisition
-           • period_number = N  → N months after acquisition
+           • period_number = 0  -> the cohort's first month (acquisition)
+           • period_number = 1  -> one month after acquisition
+           • period_number = N  -> N months after acquisition
 
   Key metrics:
     cohort_size         – total users who placed their first order in this cohort month
@@ -83,39 +83,39 @@ cohort_activity as (
 )
 
 select
-    -- ── Identifiers ────────────────────────────────────────────────────────
+    --  Identifiers 
     cs.cohort_month,
     cs.cohort_label,
     cs.cohort_year,
     cs.cohort_month_num,
-    ca.order_month                                       as activity_month,
+    ca.order_month          as activity_month,
     ca.period_number,
 
-    -- ── Cohort Size ────────────────────────────────────────────────────────
+    --  Cohort Size 
     cs.cohort_size,
 
-    -- ── Retention ──────────────────────────────────────────────────────────
+    --  Retention 
     ca.retained_users,
     round(
         ca.retained_users::numeric / nullif(cs.cohort_size, 0) * 100, 2
-    )                                                    as retention_rate_pct,
+    )       as retention_rate_pct,
 
-    -- ── Revenue ────────────────────────────────────────────────────────────
+    --  Revenue 
     round(coalesce(ca.total_revenue, 0)::numeric, 2)    as total_revenue,
     round(
         coalesce(ca.total_revenue, 0)::numeric /
         nullif(ca.retained_users, 0), 2
-    )                                                    as revenue_per_retained_user,
+    )       as revenue_per_retained_user,
     round(
         coalesce(ca.total_revenue, 0)::numeric /
         nullif(cs.cohort_size, 0), 2
-    )                                                    as revenue_per_cohort_user,
+    )       as revenue_per_cohort_user,
 
-    -- ── Volume ─────────────────────────────────────────────────────────────
+    --  Volume
     ca.total_orders,
     round(
         ca.total_orders::numeric / nullif(ca.retained_users, 0), 2
-    )                                                    as orders_per_retained_user
+    )       as orders_per_retained_user
 
 from cohort_activity ca
 inner join cohort_sizes cs on ca.cohort_month = cs.cohort_month

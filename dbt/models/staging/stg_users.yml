@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: stg_users
+    description: "Staging model for users - customer demographic and profile information"
+    columns:
+      - name: user_id
+        data_type: int64
+        description: "Unique identifier for each user"
+        tests:
+          - unique
+          - not_null
+
+      - name: first_name
+        data_type: string
+        description: "User's first name"
+
+      - name: last_name
+        data_type: string
+        description: "User's last name"
+
+      - name: email
+        data_type: string
+        description: "User's email address"
+
+      - name: age
+        data_type: int64
+        description: "User's age"
+
+      - name: gender
+        data_type: string
+        description: "User's gender"
+
+      - name: state
+        data_type: string
+        description: "State where user is located"
+
+      - name: street_address
+        data_type: string
+        description: "User's street address"
+
+      - name: postal_code
+        data_type: string
+        description: "User's postal code"
+
+      - name: city
+        data_type: string
+        description: "City where user is located"
+
+      - name: country
+        data_type: string
+        description: "Country where user is located"
+
+      - name: latitude
+        data_type: float64
+        description: "Latitude coordinate of user's location"
+
+      - name: longitude
+        data_type: float64
+        description: "Longitude coordinate of user's location"
+
+      - name: traffic_source
+        data_type: string
+        description: "Traffic source that brought the user to the platform"
+
+      - name: created_at
+        data_type: timestamp
+        description: "Timestamp when user account was created"
+
+      - name: updated_at
+        data_type: timestamp
+        description: "Timestamp when user account was last updated"

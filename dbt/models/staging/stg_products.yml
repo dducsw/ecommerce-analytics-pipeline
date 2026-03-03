@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: stg_products
+    description: "Staging model for products - product catalog information"
+    columns:
+      - name: product_id
+        data_type: int64
+        description: "Unique identifier for each product"
+        tests:
+          - unique
+          - not_null
+
+      - name: cost
+        data_type: float64
+        description: "Cost of the product (COGS)"
+        tests:
+          - not_null
+
+      - name: category
+        data_type: string
+        description: "Product category"
+
+      - name: name
+        data_type: string
+        description: "Product name"
+
+      - name: brand
+        data_type: string
+        description: "Product brand"
+
+      - name: retail_price
+        data_type: float64
+        description: "Retail selling price of the product"
+
+      - name: department
+        data_type: string
+        description: "Department the product belongs to"
+
+      - name: sku
+        data_type: string
+        description: "Stock Keeping Unit - unique product identifier"
+
+      - name: distribution_center_id
+        data_type: int64
+        description: "Foreign key to distribution_centers table"

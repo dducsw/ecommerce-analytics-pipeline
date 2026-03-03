@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: "Staging model for orders - order header information"
+
+    columns:
+      - name: order_id
+        data_type: int64
+        description: "A unique identifier for each order."
+        tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        data_type: int64
+        description: "The ID of the user who placed the order."
+
+      - name: status
+        data_type: string
+        description: "Current status of the order (Complete, Cancelled, Returned, Processing, Shipped)"
+        tests:
+          - accepted_values:
+              name: unexpected_order_status
+              values:
+                - Processing
+                - Cancelled
+                - Shipped
+                - Complete
+                - Returned
+
+      - name: gender
+        data_type: string
+        description: "Gender associated with the order"
+
+      - name: created_at
+        data_type: timestamp
+        description: "The timestamp when the order was created."
+        tests:
+          - not_null
+
+      - name: updated_at
+        data_type: timestamp
+        description: "Timestamp when order was last updated"
+
+      - name: returned_at
+        data_type: timestamp
+        description: "The timestamp when the order was returned, if applicable."
+        tests:
+          - not_null:
+              where: "status = 'Returned'"
+
+      - name: shipped_at
+        data_type: timestamp
+        description: "The timestamp when the order was shipped."
+        tests:
+          - not_null:
+              where: "delivered_at IS NOT NULL OR status = 'Shipped'"
+
+      - name: delivered_at
+        data_type: timestamp
+        description: "The timestamp when the order was delivered."
+        tests:
+          - not_null:
+              where: "returned_at IS NOT NULL OR status = 'Complete'"
+
+      - name: num_of_item
+        data_type: int64
+        description: "The number of items included in the order."
+        tests:
+          - not_null
