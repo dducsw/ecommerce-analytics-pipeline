@@ -25,10 +25,22 @@ user_dc_geo_distance as (
         {{ calculate_distance_km('u.longitude', 'u.latitude', 'dc.longitude', 'dc.latitude') }} as distance_in_kms
     from users as u
     cross join distribution_centers as dc
+),
+
+ranked_distances as (
+    select 
+        user_id,
+        distribution_center_id,
+        dc_name,
+        distance_in_kms,
+        row_number() over (partition by user_id order by distance_in_kms asc) as rn
+    from user_dc_geo_distance
 )
-select user_id
-	, distribution_center_id
-	, dc_name
-	, distance_in_kms
-from user_dc_geo_distance qualify row_number() over (
-		partition by user_id order by distance_in_kms asc) = 1
+
+select 
+    user_id,
+    distribution_center_id,
+    dc_name,
+    distance_in_kms
+from ranked_distances
+where rn = 1

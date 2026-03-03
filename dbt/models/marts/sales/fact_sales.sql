@@ -4,12 +4,17 @@ with order_items_enriched as (
     select * from {{ ref('int_order_items_enriched') }}
 ),
 
+-- Use only current SCD2 versions
+-- For point-in-time accuracy join on:
+--   p.valid_from <= oie.order_item_created_at < coalesce(p.valid_to, 'infinity')
 products as (
     select * from {{ ref('dim_products') }}
+    where is_current = true
 ),
 
 users as (
     select * from {{ ref('dim_users') }}
+    where is_current = true
 )
 
 select
@@ -41,7 +46,7 @@ select
     oie.sale_price,
     oie.inventory_cost as cost_of_goods_sold,
     oie.sale_price - oie.inventory_cost as gross_profit,
-    round((oie.sale_price - oie.inventory_cost) / nullif(oie.sale_price, 0) * 100, 2) as gross_margin_pct,
+    round(((oie.sale_price - oie.inventory_cost) / nullif(oie.sale_price, 0) * 100)::numeric, 2) as gross_margin_pct,
     
     -- Product Context
     p.product_name,
@@ -52,7 +57,7 @@ select
     oie.sale_price - p.retail_price as discount_amount,
     case 
         when p.retail_price > 0 
-        then round((p.retail_price - oie.sale_price) / p.retail_price * 100, 2) 
+        then round(((p.retail_price - oie.sale_price) / p.retail_price * 100)::numeric, 2) 
         else 0 
     end as discount_pct,
     
@@ -69,12 +74,12 @@ select
     -- Inventory Context
     oie.inventory_created_at,
     oie.inventory_sold_at,
-    datediff(day, oie.inventory_created_at, oie.inventory_sold_at) as days_in_inventory,
+    (oie.inventory_sold_at::date - oie.inventory_created_at::date) as days_in_inventory,
     
     -- Fulfillment Metrics (in hours)
-    round(extract(epoch from (oie.order_item_shipped_at - oie.order_item_created_at)) / 3600, 2) as hours_to_ship,
-    round(extract(epoch from (oie.order_item_delivered_at - oie.order_item_shipped_at)) / 3600, 2) as hours_in_transit,
-    round(extract(epoch from (oie.order_item_delivered_at - oie.order_item_created_at)) / 3600, 2) as hours_to_deliver,
+    round((extract(epoch from (oie.order_item_shipped_at - oie.order_item_created_at)) / 3600)::numeric, 2) as hours_to_ship,
+    round((extract(epoch from (oie.order_item_delivered_at - oie.order_item_shipped_at)) / 3600)::numeric, 2) as hours_in_transit,
+    round((extract(epoch from (oie.order_item_delivered_at - oie.order_item_created_at)) / 3600)::numeric, 2) as hours_to_deliver,
     
     -- Sale Flags
     case when oie.order_item_status = 'Returned' then true else false end as is_returned,

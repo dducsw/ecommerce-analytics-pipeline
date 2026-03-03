@@ -18,8 +18,8 @@ date_dimension as (
         extract(month from date_day) as month,
         extract(week from date_day) as week_of_year,
         extract(day from date_day) as day_of_month,
-        extract(dayofweek from date_day) as day_of_week,
-        extract(dayofyear from date_day) as day_of_year,
+        extract(dow from date_day) as day_of_week,
+        extract(doy from date_day) as day_of_year,
         
         -- Date Names
         to_char(date_day, 'Month') as month_name,
@@ -34,8 +34,8 @@ date_dimension as (
         concat('W', extract(week from date_day), '-', extract(year from date_day)) as year_week,
         
         -- Date Flags
-        case when extract(dayofweek from date_day) in (0, 6) then true else false end as is_weekend,
-        case when extract(dayofweek from date_day) between 1 and 5 then true else false end as is_weekday,
+        case when extract(dow from date_day) in (0, 6) then true else false end as is_weekend,
+        case when extract(dow from date_day) between 1 and 5 then true else false end as is_weekday,
         
         -- Fiscal Calendar (assuming fiscal year starts in January)
         case 
