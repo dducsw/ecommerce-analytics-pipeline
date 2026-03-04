@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: thelook_ecommerce
+    description: Raw data from Postgres loaded into BigQuery
+    database: thelook-dwh
+    schema: raw
+    tables:
+      - name: users
+        description: User dimension table
+      
+      - name: products
+        description: Product catalog
+      
+      - name: distribution_centers
+        description: Distribution center locations
+      
+      - name: orders
+        description: Order header table
+      
+      - name: order_items
+        description: Order line items
+      
+      - name: inventory_items
+        description: Inventory tracking
+      
+      - name: events
+        description: Website event log

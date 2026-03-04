@@ -18,8 +18,8 @@ renamed as (
         latitude,
         longitude,
         traffic_source,
-        created_at::timestamp as created_at,
-        updated_at::timestamp as updated_at
+        {{ cast_timestamp('created_at') }} as created_at,
+        {{ cast_timestamp('updated_at') }} as updated_at
     from source
     where id is not null
 )

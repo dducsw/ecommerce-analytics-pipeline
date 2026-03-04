@@ -7,11 +7,11 @@ renamed as (
         user_id,
         status,
         gender,
-        created_at::timestamp as created_at,
-        updated_at::timestamp as updated_at,
-        returned_at::timestamp as returned_at,
-        shipped_at::timestamp as shipped_at,
-        delivered_at::timestamp as delivered_at,
+        {{ cast_timestamp('created_at') }} as created_at,
+        {{ cast_timestamp('updated_at') }} as updated_at,
+        {{ cast_timestamp('returned_at') }} as returned_at,
+        {{ cast_timestamp('shipped_at') }} as shipped_at,
+        {{ cast_timestamp('delivered_at') }} as delivered_at,
         num_of_item
     from source
     where order_id is not null

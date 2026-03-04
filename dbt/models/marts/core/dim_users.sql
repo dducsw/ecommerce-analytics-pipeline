@@ -112,7 +112,7 @@ select
         else 'Never Purchased'
     end as customer_status,
 
-    (us.last_order_at::date - us.first_order_at::date) as days_as_customer
+    {{ date_diff('us.last_order_at', 'us.first_order_at') }} as days_as_customer
 
 from users_with_scd2 u
 left join user_stats us on u.user_id = us.user_id

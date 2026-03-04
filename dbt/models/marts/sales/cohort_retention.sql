@@ -37,12 +37,12 @@ with cohort_users as (
 orders_monthly as (
     select
         o.user_id,
-        date_trunc('month', o.order_created_at)::date   as order_month,
+        {{ cast_date('date_trunc(\'month\', o.order_created_at)') }} as order_month,
         sum(o.total_sale_amount)                         as period_revenue,
         count(distinct o.order_id)                       as period_orders
     from {{ ref('fact_orders') }} o
     where o.is_cancelled = false
-    group by o.user_id, date_trunc('month', o.order_created_at)::date
+    group by {{ cast_date('date_trunc(\'month\', o.order_created_at)') }}, o.user_id
 ),
 
 -- Cohort size per cohort month

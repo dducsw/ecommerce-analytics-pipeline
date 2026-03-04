@@ -7,7 +7,7 @@ renamed as (
         user_id,
         sequence_number,
         session_id,
-        created_at::timestamp as created_at,
+        {{ cast_timestamp('created_at') }} as created_at,
         ip_address,
         city,
         state,

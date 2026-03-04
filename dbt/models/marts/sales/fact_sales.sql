@@ -74,12 +74,12 @@ select
     -- Inventory Context
     oie.inventory_created_at,
     oie.inventory_sold_at,
-    (oie.inventory_sold_at::date - oie.inventory_created_at::date) as days_in_inventory,
+    {{ date_diff('oie.inventory_sold_at', 'oie.inventory_created_at') }} as days_in_inventory,
     
     -- Fulfillment Metrics (in hours)
-    round((extract(epoch from (oie.order_item_shipped_at - oie.order_item_created_at)) / 3600)::numeric, 2) as hours_to_ship,
-    round((extract(epoch from (oie.order_item_delivered_at - oie.order_item_shipped_at)) / 3600)::numeric, 2) as hours_in_transit,
-    round((extract(epoch from (oie.order_item_delivered_at - oie.order_item_created_at)) / 3600)::numeric, 2) as hours_to_deliver,
+    round({{ cast_numeric('timestamp_diff_hours(oie.order_item_shipped_at, oie.order_item_created_at)') }}, 2) as hours_to_ship,
+    round({{ cast_numeric('timestamp_diff_hours(oie.order_item_delivered_at, oie.order_item_shipped_at)') }}, 2) as hours_in_transit,
+    round({{ cast_numeric('timestamp_diff_hours(oie.order_item_delivered_at, oie.order_item_created_at)') }}, 2) as hours_to_deliver,
     
     -- Sale Flags
     case when oie.order_item_status = 'Returned' then true else false end as is_returned,

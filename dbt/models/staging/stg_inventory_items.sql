@@ -5,8 +5,8 @@ renamed as (
     select
         id as inventory_item_id,
         product_id,
-        created_at::timestamp as created_at,
-        sold_at::timestamp as sold_at,
+        {{ cast_timestamp('created_at') }} as created_at,
+        {{ cast_timestamp('sold_at') }} as sold_at,
         cost,
         product_category,
         product_name,
