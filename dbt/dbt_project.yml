@@ -36,12 +36,21 @@ models:
     marts:
       +materialized: table
       +schema: marts
+      +tags: ["marts"]
 
-# Seed configurations
-seeds:
-  ecommerce_analytics:
-    +schema: raw
-    +quote_columns: false
+      core:
+        +tags: ["marts", "core"]
+
+      sales:
+        +tags: ["marts", "sales"]
+        # Heavy models: incremental or window functions
+        fact_sales:
+          +tags: ["marts", "sales", "heavy"]
+        cohort_retention:
+          +tags: ["marts", "sales", "heavy"]
+
+      product:
+        +tags: ["marts", "product"]
 
 # Snapshot configurations
 snapshots:

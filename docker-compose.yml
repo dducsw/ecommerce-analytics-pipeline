@@ -82,6 +82,7 @@ x-airflow-common:
     - ${AIRFLOW_PROJ_DIR:-.}/airflow/logs:/opt/airflow/logs
     - ${AIRFLOW_PROJ_DIR:-.}/airflow/config:/opt/airflow/config
     - ${AIRFLOW_PROJ_DIR:-.}/airflow/plugins:/opt/airflow/plugins
+    - ${AIRFLOW_PROJ_DIR:-.}/dbt:/opt/airflow/dbt  # Mount dbt project for Cosmos DAG
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
@@ -344,6 +345,8 @@ services:
       - ./dbt:/dbt
       - ./data:/data
     working_dir: /dbt
+    ports:
+      - "8081:8081"  # dbt docs serve
     environment:
       DBT_PROFILES_DIR: /dbt
       POSTGRES_HOST: postgres

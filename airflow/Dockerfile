@@ -13,5 +13,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 USER airflow
 
 # Python dependencies (pinned versions)
-COPY requirements.txt /requirements.txt
+COPY airflow/requirements.txt /requirements.txt
 RUN pip install --no-cache-dir -r /requirements.txt

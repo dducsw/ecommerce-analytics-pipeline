@@ -6,6 +6,11 @@ apache-airflow-providers-docker>=3.10.0
 # Database drivers
 psycopg2-binary>=2.9.9
 
+# dbt integration
+dbt-core>=1.7.0,<2.0.0
+dbt-postgres>=1.7.0,<2.0.0
+# For Cosmos integration (optional but recommended)
+astronomer-cosmos[dbt-postgres]>=1.3.0
 
 # Utilities
 python-dotenv>=1.0.0

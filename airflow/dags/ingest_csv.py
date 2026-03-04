@@ -83,6 +83,7 @@ def create_tables(engine: Engine, schema: str):
         logger.info(f"✓ Created table: {schema}.distribution_centers")
         
         # Products
+        # updated_at is used by dbt SCD2 snapshot (snap_products.sql)
         conn.execute(text(f"""
             CREATE TABLE IF NOT EXISTS {schema}.products (
                 id BIGINT PRIMARY KEY,
@@ -93,7 +94,8 @@ def create_tables(engine: Engine, schema: str):
                 retail_price DOUBLE PRECISION,
                 department TEXT,
                 sku TEXT,
-                distribution_center_id BIGINT
+                distribution_center_id BIGINT,
+                updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
             )
         """))
         logger.info(f"✓ Created table: {schema}.products")
@@ -225,9 +227,13 @@ def load_csv_to_table(
         # Replace empty strings with None for proper NULL handling
         df = df.replace({"": None})
         
-        # Auto-populate updated_at from created_at if not present
-        if 'created_at' in df.columns and 'updated_at' not in df.columns:
-            if table_name in ['users', 'orders', 'order_items']:
+        # Auto-populate updated_at if the column is not in the CSV
+        # products uses NOW() as default since it has no created_at column
+        if 'updated_at' not in df.columns:
+            if table_name == 'products':
+                from datetime import datetime
+                df['updated_at'] = datetime.now()
+            elif 'created_at' in df.columns and table_name in ['users', 'orders', 'order_items']:
                 df['updated_at'] = df['created_at']
         
         # Load data in chunks (same method as load_remaining_tables.py)

@@ -20,7 +20,7 @@ CREATE TABLE distribution_centers (
 );
 
 -- Products
--- Sau cần bổ sung thêm updated_at để SCD2 
+-- updated_at is used by dbt SCD2 snapshot (snap_products.sql)
 CREATE TABLE products (
     id BIGINT PRIMARY KEY,
     cost DOUBLE PRECISION,
@@ -30,7 +30,8 @@ CREATE TABLE products (
     retail_price DOUBLE PRECISION,
     department TEXT,
     sku TEXT,
-    distribution_center_id BIGINT
+    distribution_center_id BIGINT,
+    updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
 );
 
 -- Users
