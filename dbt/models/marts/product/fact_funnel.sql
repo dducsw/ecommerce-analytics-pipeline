@@ -17,17 +17,17 @@ select
 
     -- Conversion Rates
     round(
-        count(distinct case when e.event_type = 'cart'     then e.session_id end)::numeric /
+        cast(count(distinct case when e.event_type = 'cart' then e.session_id end) as numeric) /
         nullif(count(distinct case when e.event_type = 'product' then e.session_id end), 0) * 100, 2
     )                                                                                as view_to_cart_rate,
 
     round(
-        count(distinct case when e.event_type = 'purchase' then e.session_id end)::numeric /
-        nullif(count(distinct case when e.event_type = 'cart'    then e.session_id end), 0) * 100, 2
+        cast(count(distinct case when e.event_type = 'purchase' then e.session_id end) as numeric) /
+        nullif(count(distinct case when e.event_type = 'cart' then e.session_id end), 0) * 100, 2
     )                                                                                as cart_to_purchase_rate,
 
     round(
-        count(distinct case when e.event_type = 'purchase' then e.session_id end)::numeric /
+        cast(count(distinct case when e.event_type = 'purchase' then e.session_id end) as numeric) /
         nullif(count(distinct case when e.event_type = 'product' then e.session_id end), 0) * 100, 2
     )                                                                                as overall_conversion_rate
 

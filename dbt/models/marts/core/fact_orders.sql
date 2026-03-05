@@ -61,7 +61,7 @@ select
     oa.total_sale_amount,
     oa.total_cost_amount,
     oa.total_profit_amount,
-    round(((oa.total_profit_amount / nullif(oa.total_sale_amount, 0)) * 100)::numeric, 2) as profit_margin_pct,
+    round(cast((oa.total_profit_amount / nullif(oa.total_sale_amount, 0)) * 100 as numeric), 2) as profit_margin_pct,
     oa.avg_item_price,
     
     -- Item Status
@@ -70,9 +70,9 @@ select
     oa.completed_items_count,
     
     -- Processing Time Metrics (in hours)
-    round((extract(epoch from (o.shipped_at - o.created_at)) / 3600)::numeric, 2) as hours_to_ship,
-    round((extract(epoch from (o.delivered_at - o.shipped_at)) / 3600)::numeric, 2) as hours_in_transit,
-    round((extract(epoch from (o.delivered_at - o.created_at)) / 3600)::numeric, 2) as hours_to_deliver,
+    round(cast(timestamp_diff(o.shipped_at, o.created_at, second) / 3600 as numeric), 2) as hours_to_ship,
+    round(cast(timestamp_diff(o.delivered_at, o.shipped_at, second) / 3600 as numeric), 2) as hours_in_transit,
+    round(cast(timestamp_diff(o.delivered_at, o.created_at, second) / 3600 as numeric), 2) as hours_to_deliver,
     
     -- Order Flags
     case when o.status = 'Returned' then true else false end as is_returned,

@@ -26,31 +26,33 @@ models:
     staging:
       +materialized: view
       +schema: staging
+      +tags: ["staging", "daily"]
     
     # Intermediate models
     intermediate:
       +materialized: view
       +schema: intermediate
+      +tags: ["intermediate", "daily"]
     
     # Mart models (final analytical tables)
     marts:
       +materialized: table
       +schema: marts
-      +tags: ["marts"]
+      +tags: ["marts", "daily"]
 
       core:
-        +tags: ["marts", "core"]
+        +tags: ["marts", "core", "daily"]
 
       sales:
-        +tags: ["marts", "sales"]
+        +tags: ["marts", "sales", "daily"]
         # Heavy models: incremental or window functions
         fact_sales:
-          +tags: ["marts", "sales", "heavy"]
+          +tags: ["marts", "sales", "heavy", "weekly"]
         cohort_retention:
-          +tags: ["marts", "sales", "heavy"]
+          +tags: ["marts", "sales", "heavy", "weekly"]
 
       product:
-        +tags: ["marts", "product"]
+        +tags: ["marts", "product", "daily"]
 
 # Snapshot configurations
 snapshots:

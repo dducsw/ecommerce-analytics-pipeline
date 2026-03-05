@@ -37,12 +37,12 @@ with cohort_users as (
 orders_monthly as (
     select
         o.user_id,
-        {{ cast_date('date_trunc(\'month\', o.order_created_at)') }} as order_month,
+        cast(date_trunc(o.order_created_at, month) as date) as order_month,
         sum(o.total_sale_amount)                         as period_revenue,
         count(distinct o.order_id)                       as period_orders
     from {{ ref('fact_orders') }} o
     where o.is_cancelled = false
-    group by {{ cast_date('date_trunc(\'month\', o.order_created_at)') }}, o.user_id
+    group by cast(date_trunc(o.order_created_at, month) as date), o.user_id
 ),
 
 -- Cohort size per cohort month
@@ -64,10 +64,10 @@ cohort_activity as (
         om.order_month,
 
         -- Period number: months since cohort acquisition
-        (
-            extract(year  from age(om.order_month, cu.cohort_month)) * 12 +
-            extract(month from age(om.order_month, cu.cohort_month))
-        )::int                                           as period_number,
+        cast(
+            (extract(year from om.order_month) - extract(year from cu.cohort_month)) * 12 +
+            (extract(month from om.order_month) - extract(month from cu.cohort_month))
+        as int64)                                        as period_number,
 
         count(distinct cu.user_id)                       as retained_users,
         sum(om.period_revenue)                           as total_revenue,
@@ -97,24 +97,24 @@ select
     --  Retention 
     ca.retained_users,
     round(
-        ca.retained_users::numeric / nullif(cs.cohort_size, 0) * 100, 2
+        cast(ca.retained_users as numeric) / nullif(cs.cohort_size, 0) * 100, 2
     )       as retention_rate_pct,
 
     --  Revenue 
-    round(coalesce(ca.total_revenue, 0)::numeric, 2)    as total_revenue,
+    round(cast(coalesce(ca.total_revenue, 0) as numeric), 2)    as total_revenue,
     round(
-        coalesce(ca.total_revenue, 0)::numeric /
+        cast(coalesce(ca.total_revenue, 0) as numeric) /
         nullif(ca.retained_users, 0), 2
     )       as revenue_per_retained_user,
     round(
-        coalesce(ca.total_revenue, 0)::numeric /
+        cast(coalesce(ca.total_revenue, 0) as numeric) /
         nullif(cs.cohort_size, 0), 2
     )       as revenue_per_cohort_user,
 
     --  Volume
     ca.total_orders,
     round(
-        ca.total_orders::numeric / nullif(ca.retained_users, 0), 2
+        cast(ca.total_orders as numeric) / nullif(ca.retained_users, 0), 2
     )       as orders_per_retained_user
 
 from cohort_activity ca

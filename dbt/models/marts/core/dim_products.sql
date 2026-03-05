@@ -74,7 +74,7 @@ select
     p.cost                      as product_cost,
     p.retail_price,
     p.retail_price - p.cost     as profit_margin,
-    round(((p.retail_price - p.cost) / nullif(p.retail_price, 0) * 100)::numeric, 2)    as profit_margin_pct,
+    round(cast((p.retail_price - p.cost) / nullif(p.retail_price, 0) * 100 as numeric), 2)    as profit_margin_pct,
 
     -- Distribution
     p.distribution_center_id,

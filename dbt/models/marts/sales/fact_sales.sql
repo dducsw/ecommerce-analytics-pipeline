@@ -46,7 +46,7 @@ select
     oie.sale_price,
     oie.inventory_cost as cost_of_goods_sold,
     oie.sale_price - oie.inventory_cost as gross_profit,
-    round(((oie.sale_price - oie.inventory_cost) / nullif(oie.sale_price, 0) * 100)::numeric, 2) as gross_margin_pct,
+    round(cast((oie.sale_price - oie.inventory_cost) / nullif(oie.sale_price, 0) * 100 as numeric), 2) as gross_margin_pct,
     
     -- Product Context
     p.product_name,
@@ -57,7 +57,7 @@ select
     oie.sale_price - p.retail_price as discount_amount,
     case 
         when p.retail_price > 0 
-        then round(((p.retail_price - oie.sale_price) / p.retail_price * 100)::numeric, 2) 
+        then round(cast((p.retail_price - oie.sale_price) / p.retail_price * 100 as numeric), 2) 
         else 0 
     end as discount_pct,
     
@@ -77,9 +77,9 @@ select
     {{ date_diff('oie.inventory_sold_at', 'oie.inventory_created_at') }} as days_in_inventory,
     
     -- Fulfillment Metrics (in hours)
-    round({{ cast_numeric('timestamp_diff_hours(oie.order_item_shipped_at, oie.order_item_created_at)') }}, 2) as hours_to_ship,
-    round({{ cast_numeric('timestamp_diff_hours(oie.order_item_delivered_at, oie.order_item_shipped_at)') }}, 2) as hours_in_transit,
-    round({{ cast_numeric('timestamp_diff_hours(oie.order_item_delivered_at, oie.order_item_created_at)') }}, 2) as hours_to_deliver,
+    round({{ timestamp_diff_hours('oie.order_item_shipped_at', 'oie.order_item_created_at') }}, 2) as hours_to_ship,
+    round({{ timestamp_diff_hours('oie.order_item_delivered_at', 'oie.order_item_shipped_at') }}, 2) as hours_in_transit,
+    round({{ timestamp_diff_hours('oie.order_item_delivered_at', 'oie.order_item_created_at') }}, 2) as hours_to_deliver,
     
     -- Sale Flags
     case when oie.order_item_status = 'Returned' then true else false end as is_returned,

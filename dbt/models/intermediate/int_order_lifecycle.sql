@@ -4,10 +4,10 @@ with orders as (
     select
         order_id,
         status as status_order,
-        created_at::timestamp,
-        shipped_at::timestamp,
-        delivered_at::timestamp,
-        returned_at::timestamp
+        cast(created_at as timestamp) as created_at,
+        cast(shipped_at as timestamp) as shipped_at,
+        cast(delivered_at as timestamp) as delivered_at,
+        cast(returned_at as timestamp) as returned_at
     from {{ ref('stg_orders') }}
 )
 

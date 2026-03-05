@@ -1,12 +1,26 @@
 ecommerce_analytics:
   outputs:
-    dev:
-      dbname: thelook_ecommerce
+    # Postgres (legacy)
+    dev_postgres:
+      type: postgres
       host: postgres
-      pass: airflow
       port: 5432
+      user: airflow
+      pass: airflow
+      dbname: thelook_ecommerce
       schema: public
       threads: 4
-      type: postgres
-      user: airflow
+    
+    # BigQuery (production)
+    dev:
+      type: bigquery
+      method: service-account
+      keyfile: /opt/airflow/credentials/gcp-key.json
+      project: thelook-dwh
+      dataset: raw
+      threads: 4
+      timeout_seconds: 300
+      location: US
+      priority: interactive
+  
   target: dev

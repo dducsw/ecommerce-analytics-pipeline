@@ -18,24 +18,24 @@ date_dimension as (
         extract(month from date_day) as month,
         extract(week from date_day) as week_of_year,
         extract(day from date_day) as day_of_month,
-        extract(dow from date_day) as day_of_week,
-        extract(doy from date_day) as day_of_year,
+        extract(dayofweek from date_day) as day_of_week,
+        extract(dayofyear from date_day) as day_of_year,
         
         -- Date Names
-        to_char(date_day, 'Month') as month_name,
-        to_char(date_day, 'Mon') as month_name_short,
-        to_char(date_day, 'Day') as day_name,
-        to_char(date_day, 'Dy') as day_name_short,
+        format_date('%B', date_day) as month_name,
+        format_date('%b', date_day) as month_name_short,
+        format_date('%A', date_day) as day_name,
+        format_date('%a', date_day) as day_name_short,
         
         -- Formatted Dates
-        to_char(date_day, 'YYYY-MM-DD') as date_formatted,
-        to_char(date_day, 'YYYY-MM') as year_month,
-        to_char(date_day, 'YYYY-Q') as year_quarter,
-        concat('W', extract(week from date_day), '-', extract(year from date_day)) as year_week,
+        format_date('%Y-%m-%d', date_day) as date_formatted,
+        format_date('%Y-%m', date_day) as year_month,
+        concat(format_date('%Y', date_day), '-Q', cast(extract(quarter from date_day) as string)) as year_quarter,
+        concat('W', cast(extract(week from date_day) as string), '-', cast(extract(year from date_day) as string)) as year_week,
         
-        -- Date Flags
-        case when extract(dow from date_day) in (0, 6) then true else false end as is_weekend,
-        case when extract(dow from date_day) between 1 and 5 then true else false end as is_weekday,
+        -- Date Flags (BigQuery: 1=Sunday, 7=Saturday)
+        case when extract(dayofweek from date_day) in (1, 7) then true else false end as is_weekend,
+        case when extract(dayofweek from date_day) between 2 and 6 then true else false end as is_weekday,
         
         -- Fiscal Calendar (assuming fiscal year starts in January)
         case 

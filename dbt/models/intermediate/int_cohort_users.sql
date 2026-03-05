@@ -21,7 +21,7 @@ first_order_per_user as (
     select
         user_id,
         min(order_created_at)                           as first_order_at,
-        date_trunc('month', min(order_created_at))::date as cohort_month
+        cast(date_trunc(min(order_created_at), month) as date) as cohort_month
     from orders
     group by user_id
 )
@@ -32,8 +32,8 @@ select
     cohort_month,
 
     -- Convenience labels
-    to_char(cohort_month, 'YYYY-MM')                    as cohort_label,
-    extract(year  from cohort_month)::int               as cohort_year,
-    extract(month from cohort_month)::int               as cohort_month_num
+    format_date('%Y-%m', cohort_month)                  as cohort_label,
+    cast(extract(year from cohort_month) as int64)      as cohort_year,
+    cast(extract(month from cohort_month) as int64)     as cohort_month_num
 
 from first_order_per_user

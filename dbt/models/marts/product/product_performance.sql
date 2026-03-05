@@ -31,7 +31,7 @@ product_metrics as (
         
         -- Returns
         count(case when is_returned then 1 end) as returned_units,
-        round(count(case when is_returned then 1 end)::numeric / 
+        round(cast(count(case when is_returned then 1 end) as numeric) / 
               nullif(count(*), 0) * 100, 2) as return_rate_pct
 
     from sales
