@@ -340,20 +340,17 @@ services:
         condition: service_completed_successfully
 
   dbt:
-    image: ghcr.io/dbt-labs/dbt-postgres:1.9.latest
+    image: ghcr.io/dbt-labs/dbt-bigquery:1.9.latest
     volumes:
       - ./dbt:/dbt
       - ./data:/data
+      - ./credentials:/opt/airflow/credentials
     working_dir: /dbt
     ports:
       - "8081:8081"  # dbt docs serve
     environment:
       DBT_PROFILES_DIR: /dbt
-      POSTGRES_HOST: postgres
-      POSTGRES_USER: airflow
-      POSTGRES_PASSWORD: airflow
-      POSTGRES_DB: airflow
-      POSTGRES_PORT: 5432
+      GOOGLE_APPLICATION_CREDENTIALS: /opt/airflow/credentials/gcp-key.json
     depends_on:
       - postgres
     entrypoint: ["/bin/bash"]

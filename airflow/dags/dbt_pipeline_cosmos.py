@@ -16,7 +16,7 @@ _project_config = ProjectConfig(
 
 _profile_config = ProfileConfig(
     profile_name="ecommerce_analytics",
-    target_name="dev",
+    target_name="dev",  # This matches the BigQuery target in profiles.yml
     profiles_yml_filepath="/opt/airflow/dbt/profiles.yml",
 )
 
