@@ -1,19 +1,25 @@
 import os
+from pathlib import Path
 from datetime import datetime
 
 from cosmos import DbtDag, ProjectConfig, ProfileConfig, ExecutionConfig, RenderConfig
-from cosmos.constants import LoadMode
 
 # Default to Docker path, but allow override for CI/local testing
 DBT_PROJECT_PATH = os.environ.get("DBT_PROJECT_DIR", "/opt/airflow/dbt")
 
+# Only pass manifest_path when the file actually exists.
+# In CI (without GCP credentials), manifest.json is not compiled, so we
+# omit it and let Cosmos parse the project from source instead of raising
+# CosmosValueError at import time.
+_manifest_path = Path(DBT_PROJECT_PATH) / "target" / "manifest.json"
 _project_config = ProjectConfig(
     dbt_project_path=DBT_PROJECT_PATH,
+    **({"manifest_path": str(_manifest_path)} if _manifest_path.exists() else {}),
 )
 
 _profile_config = ProfileConfig(
     profile_name="ecommerce_analytics",
-    target_name="dev",
+    target_name="dev",  # This matches the BigQuery target in profiles.yml
     profiles_yml_filepath=f"{DBT_PROJECT_PATH}/profiles.yml",
 )
 
@@ -37,7 +43,6 @@ dbt_daily_marts = DbtDag(
     profile_config=_profile_config,
     execution_config=_execution_config,
     render_config=RenderConfig(
-        load_method=LoadMode.AUTOMATIC,  # Dùng manifest.json nếu có, fallback dbt ls
         select=["tag:marts"],
         exclude=["tag:heavy"],  # Bỏ qua fact_sales, cohort_retention
     ),
@@ -67,7 +72,6 @@ dbt_weekly_heavy = DbtDag(
     profile_config=_profile_config,
     execution_config=_execution_config,
     render_config=RenderConfig(
-        load_method=LoadMode.AUTOMATIC,  # Dùng manifest.json nếu có, fallback dbt ls
         select=["tag:heavy"],  # Chỉ chạy fact_sales, cohort_retention
     ),
     operator_args={
