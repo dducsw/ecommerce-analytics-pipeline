@@ -33,6 +33,13 @@ jobs:
       - name: Lint with Flake8
         run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=venv,.venv,.git
 
+      - name: Create dbt manifest stub for CI
+        run: |
+          mkdir -p dbt/target
+          cat > dbt/target/manifest.json <<'EOF'
+          {"metadata": {"dbt_schema_version": "https://schemas.getdbt.com/dbt/manifest/v12/manifest.json", "dbt_version": "1.8.0", "generated_at": "2026-01-01T00:00:00.000000Z", "invocation_id": "ci-stub", "env": {}}, "nodes": {}, "sources": {}, "exposures": {}, "metrics": {}, "selectors": {}, "parent_map": {}, "child_map": {}, "group_map": {}, "semantic_models": {}, "unit_tests": {}}
+          EOF
+
       - name: Run Airflow DAG validation
         run: |
           export AIRFLOW_HOME=$(pwd)/airflow
