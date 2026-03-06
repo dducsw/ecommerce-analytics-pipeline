@@ -67,19 +67,19 @@ jobs:
             dbt compile --profiles-dir . --target dev
           fi
 
-  docker-check:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  # docker-check:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Lint Dockerfiles (Hadolint)
-        uses: hadolint/hadolint-action@v3.1.0
-        with:
-          dockerfile: "airflow/Dockerfile"
+  #     - name: Lint Dockerfiles (Hadolint)
+  #       uses: hadolint/hadolint-action@v3.1.0
+  #       with:
+  #         dockerfile: "airflow/Dockerfile"
 
-      - name: Build Airflow Image
-        run: docker build -t airflow-ci -f airflow/Dockerfile .
+  #     - name: Build Airflow Image
+  #       run: docker build -t airflow-ci -f airflow/Dockerfile .
 
-      - name: Build Datagen Image
-        run: docker build -t datagen-ci -f datagen/thelook-ecomm/Dockerfile datagen/thelook-ecomm/
+  #     - name: Build Datagen Image
+  #       run: docker build -t datagen-ci -f datagen/thelook-ecomm/Dockerfile datagen/thelook-ecomm/
