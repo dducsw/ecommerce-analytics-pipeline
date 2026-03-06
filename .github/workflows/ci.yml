@@ -78,7 +78,7 @@ jobs:
           dockerfile: "airflow/Dockerfile"
 
       - name: Build Airflow Image
-        run: docker build -t airflow-ci -f airflow/Dockerfile airflow/
+        run: docker build -t airflow-ci -f airflow/Dockerfile .
 
       - name: Build Datagen Image
         run: docker build -t datagen-ci -f datagen/thelook-ecomm/Dockerfile datagen/thelook-ecomm/
