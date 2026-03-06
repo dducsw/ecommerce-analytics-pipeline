@@ -1,17 +1,20 @@
+import os
 from datetime import datetime
 
 from cosmos import DbtDag, ProjectConfig, ProfileConfig, ExecutionConfig, RenderConfig
 
+# Default to Docker path, but allow override for CI/local testing
+DBT_PROJECT_PATH = os.environ.get("DBT_PROJECT_DIR", "/opt/airflow/dbt")
 
 _project_config = ProjectConfig(
-    dbt_project_path="/opt/airflow/dbt",
-    manifest_path="/opt/airflow/dbt/target/manifest.json",
+    dbt_project_path=DBT_PROJECT_PATH,
+    manifest_path=f"{DBT_PROJECT_PATH}/target/manifest.json",
 )
 
 _profile_config = ProfileConfig(
     profile_name="ecommerce_analytics",
     target_name="dev",  # This matches the BigQuery target in profiles.yml
-    profiles_yml_filepath="/opt/airflow/dbt/profiles.yml",
+    profiles_yml_filepath=f"{DBT_PROJECT_PATH}/profiles.yml",
 )
 
 _execution_config = ExecutionConfig(dbt_executable_path="/usr/local/bin/dbt")

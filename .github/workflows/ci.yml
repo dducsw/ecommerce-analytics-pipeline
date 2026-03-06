@@ -36,6 +36,7 @@ jobs:
       - name: Run Airflow DAG validation
         run: |
           export AIRFLOW_HOME=$(pwd)/airflow
+          export DBT_PROJECT_DIR=$(pwd)/dbt
           pytest tests/test_dag_integrity.py
 
   dbt-validate:
