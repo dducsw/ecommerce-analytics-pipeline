@@ -1,6 +1,7 @@
 """
 Data quality checks for dbt pipeline
 """
+
 import logging
 from .postgres_client import get_postgres_connection
 
@@ -14,10 +15,12 @@ def check_table_row_count(schema, table, min_rows=1):
         cursor = conn.cursor()
         cursor.execute(f'SELECT COUNT(*) FROM "{schema}"."{table}"')
         count = cursor.fetchone()[0]
-        
+
         if count < min_rows:
-            raise ValueError(f"{schema}.{table} has only {count} rows (minimum: {min_rows})")
-        
+            raise ValueError(
+                f"{schema}.{table} has only {count} rows (minimum: {min_rows})"
+            )
+
         logger.info(f"✓ {schema}.{table}: {count:,} rows")
         return count
     finally:
@@ -28,12 +31,12 @@ def check_marts_tables():
     """Check all marts tables have data"""
     marts_tables = [
         "dim_users",
-        "dim_products", 
+        "dim_products",
         "dim_dates",
         "fct_orders",
-        "fct_order_items"
+        "fct_order_items",
     ]
-    
+
     results = {}
     for table in marts_tables:
         try:
@@ -42,7 +45,7 @@ def check_marts_tables():
         except Exception as e:
             logger.error(f"✗ {table} failed: {e}")
             raise
-    
+
     return results
 
 
@@ -56,7 +59,7 @@ def check_null_values(schema, table, columns):
                 f'SELECT COUNT(*) FROM "{schema}"."{table}" WHERE "{col}" IS NULL'
             )
             null_count = cursor.fetchone()[0]
-            
+
             if null_count > 0:
                 logger.warning(f"⚠ {schema}.{table}.{col}: {null_count} null values")
             else:

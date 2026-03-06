@@ -1,6 +1,7 @@
 """
 Notification helpers for pipeline monitoring
 """
+
 import logging
 from datetime import datetime
 
@@ -17,12 +18,12 @@ Run ID: {run_id}
 Time: {execution_date}
 Status: COMPLETED
     """
-    
+
     # TODO: Add Slack webhook integration
     # slack_webhook = os.getenv("SLACK_WEBHOOK_URL")
     # if slack_webhook:
     #     requests.post(slack_webhook, json={"text": message})
-    
+
     logger.info(message)
     print("✓ Pipeline completed successfully")
 
@@ -37,9 +38,9 @@ Run ID: {run_id}
 Time: {execution_date}
 Error: {error}
     """
-    
+
     # TODO: Add Slack/email integration
-    
+
     logger.error(message)
     print(f"✗ Pipeline failed: {error}")
 

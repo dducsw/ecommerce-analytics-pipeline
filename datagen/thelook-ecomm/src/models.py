@@ -21,7 +21,8 @@ PRODUCT_MAP = get_product_map("products.csv")
 
 def get_additional_ddls(schema: str):
     return {
-        "products": inspect.cleandoc(f"""
+        "products": inspect.cleandoc(
+            f"""
             CREATE TABLE IF NOT EXISTS {schema}.products (
                 id BIGINT PRIMARY KEY,
                 cost DOUBLE PRECISION,
@@ -32,20 +33,25 @@ def get_additional_ddls(schema: str):
                 department TEXT,
                 sku TEXT,
                 distribution_center_id BIGINT
-            );"""),
-        "distribution_centers": inspect.cleandoc(f"""
+            );"""
+        ),
+        "distribution_centers": inspect.cleandoc(
+            f"""
             CREATE TABLE IF NOT EXISTS {schema}.distribution_centers (
                 id BIGINT PRIMARY KEY,
                 name TEXT,
                 latitude DOUBLE PRECISION,
                 longitude DOUBLE PRECISION
-            );"""),
-        "heartbeat": inspect.cleandoc(f"""
+            );"""
+        ),
+        "heartbeat": inspect.cleandoc(
+            f"""
             CREATE TABLE IF NOT EXISTS {schema}.heartbeat (
                 id INT PRIMARY KEY,
                 ts TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
             );
-        """),
+        """
+        ),
     }
 
 
@@ -159,7 +165,8 @@ class User(ModelMixin):
 
     @staticmethod
     def ddl(schema: str):
-        return inspect.cleandoc(f"""
+        return inspect.cleandoc(
+            f"""
         CREATE TABLE IF NOT EXISTS {schema}.users (
             id              BIGINT PRIMARY KEY,
             first_name      TEXT,
@@ -178,7 +185,8 @@ class User(ModelMixin):
             created_at      TIMESTAMP WITHOUT TIME ZONE,
             updated_at      TIMESTAMP WITHOUT TIME ZONE
         );
-        """)
+        """
+        )
 
 
 @dataclasses.dataclass
@@ -217,7 +225,7 @@ class Order(ModelMixin):
 
     def update_status(self, fake: Faker, return_probability: float = 0.02) -> Self:
         status_changed = False
-        
+
         if self.status == OrderStatus.PROCESSING.value:
             # Transition from Processing to either Shipped or Cancelled
             new_status = fake.random_element(
@@ -251,12 +259,13 @@ class Order(ModelMixin):
 
         if status_changed:
             self.updated_at = datetime.datetime.now()
-        
+
         return self
 
     @staticmethod
     def ddl(schema: str):
-        return inspect.cleandoc(f"""
+        return inspect.cleandoc(
+            f"""
         CREATE TABLE IF NOT EXISTS {schema}.orders (
             order_id        BIGINT PRIMARY KEY,
             user_id         BIGINT,
@@ -269,7 +278,8 @@ class Order(ModelMixin):
             delivered_at    TIMESTAMP WITHOUT TIME ZONE,
             num_of_item     INT
         );
-        """)
+        """
+        )
 
 
 @dataclasses.dataclass
@@ -319,7 +329,8 @@ class OrderItem(ModelMixin):
 
     @staticmethod
     def ddl(schema: str):
-        return inspect.cleandoc(f"""
+        return inspect.cleandoc(
+            f"""
         CREATE TABLE IF NOT EXISTS {schema}.order_items (
             id                  BIGINT PRIMARY KEY,
             order_id            BIGINT,
@@ -334,7 +345,8 @@ class OrderItem(ModelMixin):
             returned_at         TIMESTAMP WITHOUT TIME ZONE,
             sale_price          DOUBLE PRECISION
         );
-        """)
+        """
+        )
 
 
 @dataclasses.dataclass
@@ -474,7 +486,8 @@ class Event(ModelMixin):
 
     @staticmethod
     def ddl(schema: str):
-        return inspect.cleandoc(f"""
+        return inspect.cleandoc(
+            f"""
         CREATE TABLE IF NOT EXISTS {schema}.events (
             id                  BIGINT PRIMARY KEY,
             user_id             BIGINT,
@@ -490,4 +503,5 @@ class Event(ModelMixin):
             event_type          TEXT,
             created_at          TIMESTAMP WITHOUT TIME ZONE
         );
-        """)
+        """
+        )

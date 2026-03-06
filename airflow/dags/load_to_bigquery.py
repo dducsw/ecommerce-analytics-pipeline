@@ -16,7 +16,11 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from utils.table_config import TABLE_MAPPINGS
 from utils.postgres_client import read_table_full
-from utils.bigquery_client import get_bigquery_client, ensure_dataset_exists, load_dataframe_to_bq
+from utils.bigquery_client import (
+    get_bigquery_client,
+    ensure_dataset_exists,
+    load_dataframe_to_bq,
+)
 
 
 def main():
@@ -63,4 +67,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

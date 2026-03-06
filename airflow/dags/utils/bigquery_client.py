@@ -47,7 +47,9 @@ def load_dataframe_to_bq(df, table_name, write_mode="WRITE_APPEND", client=None)
         client     : BigQuery client (optional, creates a new one if not provided)
     """
     if table_name not in TABLE_MAPPINGS:
-        raise ValueError(f"Table '{table_name}' not found. Available: {list(TABLE_MAPPINGS.keys())}")
+        raise ValueError(
+            f"Table '{table_name}' not found. Available: {list(TABLE_MAPPINGS.keys())}"
+        )
 
     if df.empty:
         logger.warning("DataFrame for '%s' is empty. Skipping load.", table_name)

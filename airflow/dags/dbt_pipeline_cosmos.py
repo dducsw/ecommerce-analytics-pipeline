@@ -1,12 +1,6 @@
 from datetime import datetime
 
-from cosmos import (
-    DbtDag,
-    ProjectConfig,
-    ProfileConfig,
-    ExecutionConfig,
-    RenderConfig
-)
+from cosmos import DbtDag, ProjectConfig, ProfileConfig, ExecutionConfig, RenderConfig
 
 
 _project_config = ProjectConfig(
@@ -20,9 +14,7 @@ _profile_config = ProfileConfig(
     profiles_yml_filepath="/opt/airflow/dbt/profiles.yml",
 )
 
-_execution_config = ExecutionConfig(
-    dbt_executable_path="/usr/local/bin/dbt"
-)
+_execution_config = ExecutionConfig(dbt_executable_path="/usr/local/bin/dbt")
 
 # DAG 1: Daily light marts pipeline
 #   - Runs: core, sales (light), product
@@ -38,16 +30,13 @@ dbt_daily_marts = DbtDag(
     max_active_tasks=10,
     default_args={"retries": 2},
     tags=["dbt", "cosmos", "marts", "daily"],
-
     project_config=_project_config,
     profile_config=_profile_config,
     execution_config=_execution_config,
-
     render_config=RenderConfig(
         select=["tag:marts"],
         exclude=["tag:heavy"],  # Bỏ qua fact_sales, cohort_retention
     ),
-
     operator_args={
         "install_deps": True,
         "full_refresh": False,
@@ -70,15 +59,12 @@ dbt_weekly_heavy = DbtDag(
     max_active_tasks=4,  # Giới hạn thấp hơn vì model nặng
     default_args={"retries": 1},
     tags=["dbt", "cosmos", "heavy", "weekly"],
-
     project_config=_project_config,
     profile_config=_profile_config,
     execution_config=_execution_config,
-
     render_config=RenderConfig(
         select=["tag:heavy"],  # Chỉ chạy fact_sales, cohort_retention
     ),
-
     operator_args={
         "install_deps": True,
         "full_refresh": False,  # Đổi True nếu muốn rebuild toàn bộ mỗi tuần

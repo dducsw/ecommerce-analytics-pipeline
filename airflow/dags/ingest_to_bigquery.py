@@ -20,7 +20,11 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from utils.table_config import TABLE_MAPPINGS, ALWAYS_FULL_LOAD_TABLES
 from utils.postgres_client import read_table_full, read_table_incremental
-from utils.bigquery_client import get_bigquery_client, ensure_dataset_exists, load_dataframe_to_bq
+from utils.bigquery_client import (
+    get_bigquery_client,
+    ensure_dataset_exists,
+    load_dataframe_to_bq,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +59,9 @@ def full_load_dag():
 
     dataset_ready = create_dataset()
     for table in TABLE_MAPPINGS:
-        full_load_table.override(task_id=f"full_load__{table}")(table, _dep=dataset_ready)
+        full_load_table.override(task_id=f"full_load__{table}")(
+            table, _dep=dataset_ready
+        )
 
 
 full_load_dag()
@@ -82,7 +88,9 @@ def incremental_dag():
         return "ok"
 
     @task()
-    def incremental_load_table(table_name, data_interval_start, data_interval_end, _dep=None):
+    def incremental_load_table(
+        table_name, data_interval_start, data_interval_end, _dep=None
+    ):
         """
         Load new rows for one table.
         - Event tables (has incremental_key): append rows created within the interval.
@@ -107,7 +115,9 @@ def incremental_dag():
         else:
             logger.info(
                 "Event table '%s': loading rows from %s to %s.",
-                table_name, start_dt, end_dt
+                table_name,
+                start_dt,
+                end_dt,
             )
             df = read_table_incremental(table_name, start_dt=start_dt, end_dt=end_dt)
             write_mode = "WRITE_APPEND"

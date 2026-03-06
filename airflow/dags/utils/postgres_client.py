@@ -22,7 +22,9 @@ def get_postgres_connection():
 def read_table_full(table_name):
     """Read all rows from a Postgres table. Returns a pandas DataFrame."""
     if table_name not in TABLE_MAPPINGS:
-        raise ValueError(f"Table '{table_name}' not found. Available: {list(TABLE_MAPPINGS.keys())}")
+        raise ValueError(
+            f"Table '{table_name}' not found. Available: {list(TABLE_MAPPINGS.keys())}"
+        )
 
     config = TABLE_MAPPINGS[table_name]
     schema = config["postgres_schema"]
@@ -51,13 +53,17 @@ def read_table_incremental(table_name, start_dt, end_dt):
         end_dt     : end datetime (exclusive)
     """
     if table_name not in TABLE_MAPPINGS:
-        raise ValueError(f"Table '{table_name}' not found. Available: {list(TABLE_MAPPINGS.keys())}")
+        raise ValueError(
+            f"Table '{table_name}' not found. Available: {list(TABLE_MAPPINGS.keys())}"
+        )
 
     config = TABLE_MAPPINGS[table_name]
     incremental_key = config["incremental_key"]
 
     if incremental_key is None:
-        logger.warning("Table '%s' has no incremental_key. Falling back to full load.", table_name)
+        logger.warning(
+            "Table '%s' has no incremental_key. Falling back to full load.", table_name
+        )
         return read_table_full(table_name)
 
     schema = config["postgres_schema"]
@@ -71,7 +77,11 @@ def read_table_incremental(table_name, start_dt, end_dt):
 
     logger.info(
         "Incremental load: reading %s.%s where %s in [%s, %s)",
-        schema, table, incremental_key, start_dt, end_dt
+        schema,
+        table,
+        incremental_key,
+        start_dt,
+        end_dt,
     )
 
     conn = get_postgres_connection()
